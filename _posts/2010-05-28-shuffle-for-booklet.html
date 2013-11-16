@@ -1,0 +1,51 @@
+---
+layout: "from_old_blog"
+title: "Shuffle for Booklet"
+permalink: "/2010/05/shuffle-for-booklet/"
+featured: false
+---
+
+<p>I have a reading record homework, where I have to read 10 stories, write the details about them, give them point of views, and write down 10 new vocabularies for each story. It needs to be printed on an A5 booklet, that is, one A4 paper folded in half to form 4 A5 pages.</p>
+
+<p>First, I made the template in iWork, but then I realized that iWork can't make booklets. I think that I will use <a href="http://www.fpdf.org/">FPDF</a> and <a href="http://www.setasign.de/products/pdf-php-solutions/fpdi/">FPDI</a> to do this job.</p>
+
+<p>So here's the thing I am doing.</p>
+
+<ul>
+<li>Input Data: A pdf file of A5 pages.</li>
+<li>Output Data: An A4 landscape PDF file with all the pages shuffled for printing booklets.</li>
+</ul>
+
+<p>But I found out that I can only output from first page to the last page, so I need to know first how to print a booklet of N pages. This is the topic of the blog post, which shows you the most straightforward way of computing which input page goes to which side of the output pages. Here's how the algorithm work.</p>
+
+<p
+class="center" >First, calculate the number of papers needed for N page, which is ⌈N / 4⌉ For example, I want a booklet of 16 pages, I need 4 pieces of paper. That means 8 pages.</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-05/28-1359.jpg" alt=""></p>
+
+<p
+class="center" >Then, put these papers on top of each other, fold them in half. You get booklet like this.</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-05/28-1400.jpg" alt=""></p>
+
+<p
+class="center" >Starting from the front of your booklet, label that page 1, then turn your page, label it 2 and 3. Do this for all pages.</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-05/28-1401.jpg" alt=""></p>
+
+<p
+class="center" >Now you know what to print on each page.</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-05/28-1402.jpg" alt=""></p>
+
+<p
+class="center" >Transform the above instructions into code. I get this.</p>
+
+<script src="https://gist.github.com/416863.js?file=shuffler.php"></script>
+
+<p
+class="center" >An example...</p>
+
+<script src="https://gist.github.com/416863.js?file=shuffler.example.php"></script>
+
+<p>P.S. I should have seen <a href="http://www.capca.ucalgary.ca/~wdobler/utils/ps2book.xhtml">ps2book</a> before I start writing this.</p>

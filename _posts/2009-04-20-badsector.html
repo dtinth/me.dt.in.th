@@ -1,0 +1,126 @@
+---
+layout: "from_old_blog"
+title: "Linux: Fixing bad sectors the DtTvB's way!"
+permalink: "/2009/04/badsector/"
+featured: true
+---
+
+<p><strong>VMware made a bad sector on my hard disk,</strong> maybe because of the electricity that go down.</p>
+
+<p>Anyway, 2 days ago, I can't access the virtual machine because whenever I boot it up, the system locks up. When I switch to the console, I saw something like this: { DRDY ERR }, { UNC } and some random numbers!</p>
+
+<pre><code>ata4.01: status: { DRDY ERR }
+ata4.01: error: { UNC }
+ata4.01: exception Emask 0x0 SAct 0x0 SErr 0x0 action 0x0
+ata4.01: BMDMA stat 0x44
+ata4.01: cmd 25/00:08:1e:0a:ab/00:00:54:00:00/f0 tag 0 dma 4096 in ...
+</code></pre>
+
+<p>I ran SMART check:</p>
+
+<pre><code>SMART overall-health self-assessment test result: PASSED
+</code></pre>
+
+<p>I ran fsck and everything was clean.</p>
+
+<p><strong>So, what could be the problem?</strong></p>
+
+<p>After 2 days of searching, I can identify the bad sector and move it out of my way.</p>
+
+<p>Based on <a href="http://www.roeckx.be/journal/Finding_which_sector_belongs_to_which_file_on_a_RAID_device_.html">Kurt Roeckx's article "Finding which sector belongs to which file on a RAID device,"</a> from the line with random hex number above:</p>
+
+<blockquote>
+  <p>00:08:<strong>1e:0a:ab</strong>/00:00:<strong>54</strong>:00:00</p>
+</blockquote>
+
+<p>Now I know that the random number at the top is not random anymore!</p>
+
+<p>Ok, so the bad sector must be at <strong>0x54ab0a1e</strong>, which equals to <strong>1420495390</strong>. So I tried copying that sector over to other file:</p>
+
+<pre><code>dttvb@dttvb:~$ sudo dd if=/dev/sdb of=/media/disk-3/test skip=1420495390 bs=512 count=1 iflag=direct
+dd: reading `/dev/sdb': Input/output error
+0+0 records in
+0+0 records out
+0 bytes (0 B) copied, 24.5439 s, 0.0 kB/s
+</code></pre>
+
+<p>See? It cannot copy. Let's change from 1420495390 to 1420495389 (minus one):</p>
+
+<pre><code>dttvb@dttvb:~$ sudo dd if=/dev/sdb of=/media/disk-3/test skip=1420495389 bs=512 count=1 iflag=direct
+1+0 records in
+1+0 records out
+512 bytes (512 B) copied, 0.0218896 s, 23.4 kB/s
+</code></pre>
+
+<p>Or plus one:</p>
+
+<pre><code>dttvb@dttvb:~$ sudo dd if=/dev/sdb of=/media/disk-3/test skip=1420495391 bs=512 count=1 iflag=direct
+1+0 records in
+1+0 records out
+512 bytes (512 B) copied, 0.0255337 s, 20.1 kB/s
+</code></pre>
+
+<p>Ok, so the problem is sector number 1420495390. Now I have to identify what partition that causes the error.</p>
+
+<pre><code>dttvb@dttvb:~$ sudo fdisk -lu
+   Device Boot      Start         End      Blocks   Id  System
+.........      ..........  ..........    ........   ..  ......
+.........      ..........  ..........    ........   ..  ......
+/dev/sdb4      1240571430  1426073984    92751277+  83  Linux
+.........      ..........  ..........    ........   ..  ......
+.........      ..........  ..........    ........   ..  ......
+</code></pre>
+
+<p>I removed all other entries so that you can focus on only one entry. 1420495390 (the bad sector) is between 1240571430 and 1426073984, so it must be on this partition! Let's unmount it first.</p>
+
+<pre><code>sudo umount /dev/sdb4
+</code></pre>
+
+<p>Subtract the bad sector number from the start number:</p>
+
+<pre><code>1420495390 - 1240571430 = 179923960
+</code></pre>
+
+<p>And convert it to blocks:</p>
+
+<pre><code>(179923960 * 512) / 4096 = 22490495
+</code></pre>
+
+<p>Change 4096 to the block size of your file system. Now I have the block number, I ran debugfs on my file system:</p>
+
+<pre><code>dttvb@dttvb:~$ sudo debugfs /dev/sdb4
+</code></pre>
+
+<p>Find the inode:</p>
+
+<pre><code>debugfs:  icheck 22490495
+Block   Inode number
+22490495    3956755
+</code></pre>
+
+<p>And find the file name:</p>
+
+<pre><code>debugfs:  ncheck 3956755
+Inode   Pathname
+3956755 /VM/WIN2/*************************************.vmem
+</code></pre>
+
+<p>Alright. So it's a .vmem file. Based on <a href="http://www.petri.co.il/virtual_vmware_files_explained.htm">this article</a>, .vmem file is just a backup file when the virtual machine is not shut down cleanly, well, may be because of electricity. Let's reserve it as a bad sector my moving the file elsewhere (I am not brave enough to <code>dd</code> directly on this to reallocate).</p>
+
+<pre><code>debugfs:  q
+</code></pre>
+
+<p>This returns you to the shell. Let's mount the file system. (Normally I mount it at /n)</p>
+
+<pre><code>dttvb@dttvb:~$ sudo mount /n
+</code></pre>
+
+<p>Ok.</p>
+
+<pre><code>dttvb@dttvb:/n/VM/WIN2$ mv *************************************.vmem ../bad-sector.001
+dttvb@dttvb:/n/VM/WIN2$ rm *************************************.vmem.WRITELOCK
+</code></pre>
+
+<p>Ok, now you have get rid, uh, I mean, move the problem out of your way.</p>
+
+<p>And now I can boot my virtual machine happily, and everything went back to normal. XD</p>

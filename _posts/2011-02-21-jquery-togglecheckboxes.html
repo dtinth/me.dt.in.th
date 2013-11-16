@@ -1,0 +1,30 @@
+---
+layout: "from_old_blog"
+title: "jQuery: Checkboxes Toggling Plugin"
+permalink: "/2011/02/jquery-togglecheckboxes/"
+featured: false
+---
+
+<p>In hurry, I made this simple plugin to jQuery:</p>
+
+<pre><code>    $.fn.toggleCheckboxes = function() {
+        var state = false;
+        $('input:checkbox', this).each(function() {
+            if (!this.checked) {
+                state = true;
+                return false;
+            }
+        }).each(function() {
+            this.checked = state;
+        })
+    };
+</code></pre>
+
+<p>It toggles all the checkboxes <strong>inside</strong> the matched elements all at once.</p>
+
+<p>This allows you to do something like</p>
+
+<pre><code>$('.toggle').click(function() {
+    $(this).closest('tr').toggleCheckboxes();
+});
+</code></pre>

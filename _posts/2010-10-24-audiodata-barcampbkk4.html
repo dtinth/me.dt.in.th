@@ -1,0 +1,37 @@
+---
+layout: "from_old_blog"
+title: "Audio Data API in Firefox 4: audio generation demo"
+permalink: "/2010/10/audiodata-barcampbkk4/"
+featured: false
+---
+
+<p>(Update: I just came back home, so I will fill this post with some technical details)</p>
+
+<p>I just spoke at #barcampbkk4 about the Audio Data API that's coming in Firefox 4.</p>
+
+<p>The demo: <a href="http://blog.dt.in.th/stuff/audiodata/">http://blog.dt.in.th/stuff/audiodata/</a></p>
+
+<ul>
+<li>Click for a crash cymbal.</li>
+<li>Move the mouse: control the appregiator.</li>
+<li>Accelerometer: control pad's lowpass filter (a very simple lowpass)</li>
+<li>Sound only, no visualization.</li>
+</ul>
+
+<h2>Technical info:</h2>
+
+<p>There are 5 samples used: kick, snare, closed hihat, open hihat and crash cymbal. These samples are converted to 32bit float raw file using Audacity (44100 hz, mono), and then are converted to array using <a href="http://blog.dt.in.th/stuff/audiodata/convertpcm.phps">a convertor written in PHP</a>. All melodic sounds are generated using an oscillator.</p>
+
+<p>This demo does not use dsp.js because at that time I haven't figured out how to use it.</p>
+
+<p>Instead, it used a very simple approach by putting all tracks in a single array. Each track is an object (or you can say singleton class) which has the following methods:</p>
+
+<ul>
+<li><strong>init</strong> will be called at the very beginning, used to set up event handlers (if there are any).</li>
+<li><strong>trigger</strong> will be called every 1 step. The track can use this moment to update its frequency, etc etc.</li>
+<li><strong>sample</strong> will be called for each sample. This method needs to return the sample for this track.</li>
+</ul>
+
+<p>At the beginning, the script will call init() method for each object in the array. When the user clicks the start button, it will create 2 timers, one every 60000 / 130 / 4 msec (= 1/4 beat if BPM is 130), and one every sample.</p>
+
+<p>The first timer will call the trigger() method on each object in the array, and another one goes through the array, call the sample() method and sum it up, and commit the audio buffer to the audio tag.</p>

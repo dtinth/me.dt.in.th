@@ -1,0 +1,76 @@
+---
+layout: "from_old_blog"
+title: "A Simple GPS Tracker is Too Simple. My GPS Tracking Webapp."
+permalink: "/2011/04/gps/"
+featured: false
+---
+
+<p>I was looking for a free GPS tracker to record trips from my school to my university on my iPad.</p>
+
+<p>One that does the simplest things that a GPS tracker can do: record the coordinates and let me get these data out to do stuff with it.</p>
+
+<h2>I Haven't Found Any Which Works for Me</h2>
+
+<p>Many GPS trackers are not free (and has a lot of features I don't really want), or relies heavily on their own server.</p>
+
+<p>I prefer to have full control over my data. I would like to only send them when I want, and have full access to them.</p>
+
+<h2>My Simplest GPS Tracking Webapp</h2>
+
+<p>This is the simplest GPS tracking webapp that works for me.</p>
+
+<p><strong>What it does:</strong> It logs your location and time in localStorage and submits them to any URL when you click "Submit". That's it.</p>
+
+<p>Without much talking, let's <a href="https://github.com/dtinth/gps/blob/gh-pages/index.html">see the code</a> (or <a href="http://dtinth.github.com/gps/">the live version</a>).</p>
+
+<p>It has got no map display, speedometer, or whatever. It just logs your coordinates locally into the textarea and localStorage and submits to the URL specified at the top.</p>
+
+<p>This app won't communicate with the server (the URL specified at the top) unless you click the submit button.</p>
+
+<h2>Usage (for GPS-equipped iDevices)</h2>
+
+<ul>
+<li>Turn off "Auto-Lock" in the Settings app (set it to Never). This app won't track your location when your device is off or locked.</li>
+<li>Open Safari and navigate to the web app's URL.</li>
+<li>Specify the server's URL.</li>
+<li>Tap the "Start Tracking" button.</li>
+<li>When tracking, no connection to the Internet is needed.</li>
+<li>Once finished, tap the "Submit" button to submit them to the server.</li>
+</ul>
+
+<h2>Receiving The Log</h2>
+
+<p>My GPS tracker sends the log (contents of the textarea) to the URL specified at the top by using the <code>coords</code> POST variable.</p>
+
+<p>Your script should be able to handle it easily. Here is the script that runs on my server:</p>
+
+<pre><code>&lt;?php file_put_contents('/path/to/gps.log', $_POST['coords']);
+</code></pre>
+
+<h2>Parsing The Log Format</h2>
+
+<p>There are 4 kinds of line. A comment line, a start line, a coordinate line, or the failing line.</p>
+
+<p>A comment line starts with <code>--</code>. Your log parser should ignore these lines. For example:</p>
+
+<pre><code>-- this is a comment
+</code></pre>
+
+<p>A start line indicates the time that the user pressed the "Start Tracking" button. The format is <code>[time] // start</code>. For example:</p>
+
+<pre><code>1302263615830 // start
+</code></pre>
+
+<p>A coordinate line looks like <code>[time] // [lat] // [lng]</code>. A example of this line:</p>
+
+<pre><code>1302263698765 // 13.797455945576084 // 100.61361547747381
+</code></pre>
+
+<p>Finally, a failure line indicates that the tracker wasn't able to track the position at a specified time. For example,</p>
+
+<pre><code>1302263678901 // fail
+</code></pre>
+
+<h2>Have Fun With Your Data</h2>
+
+<p>Use it with Google Maps API or whatever. Have fun!</p>

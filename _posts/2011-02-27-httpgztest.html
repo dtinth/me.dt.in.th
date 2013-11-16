@@ -1,0 +1,39 @@
+---
+layout: "from_old_blog"
+title: "Shell Script: Testing Gzip"
+permalink: "/2011/02/httpgztest/"
+featured: true
+---
+
+<p>I found this old shell script I have written long time ago. I called it <code>httpgztest</code>.</p>
+
+<pre><code>#!/bin/bash
+NOGZ=`wget "$1" -q -O- | wc -c`
+echo "Without gzip:       $NOGZ"
+YESGZ=`wget --header="Accept-Encoding: gzip, deflate" "$1" -q -O- | wc -c`
+echo "With gzip:          $YESGZ"
+RATIO=`echo "scale=3;$YESGZ/$NOGZ" | bc`
+echo "Compression ratio:  $RATIO"
+if [ $YESGZ -ge $NOGZ ]; then
+    echo "Gzip is not enabled for this URL. Go check."
+fi
+</code></pre>
+
+<p>To use it, run it, passing URL as the argument</p>
+
+<pre><code>httpgztest http://dev.tw.dt.in.th/thaiWitter/js.js
+</code></pre>
+
+<p>and it shows the compression ratio.</p>
+
+<pre><code>Without gzip:       79851
+With gzip:          20839
+Compression ratio:  .260
+</code></pre>
+
+<p>And if the first and the second number are the same, i.e., the compression ratio is 1, then your gzip is not working.</p>
+
+<pre><code>Without gzip:       1820
+With gzip:          1820
+Compression ratio:  1.000
+</code></pre>

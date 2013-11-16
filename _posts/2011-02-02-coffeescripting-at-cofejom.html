@@ -1,0 +1,66 @@
+---
+layout: "from_old_blog"
+title: "CoffeeScripting @ Code Jom"
+permalink: "/2011/02/coffeescripting-at-cofejom/"
+featured: false
+---
+
+<p>Last year, <a href="http://blog.dt.in.th/2010/02/javascripting-at-codejom/">I used JavaScript at Code Jom competition</a>. It was great, and I thought that I will use JavaScript in this year, but not using the old PHP+SpiderMonkey shell. I wanted to try something different, and I was really interested in <a href="http://nodejs.org/">Node.js</a> and <a href="http://narwhaljs.org/">Narwhal</a>.</p>
+
+<p>However, I stumbled upon <a href="http://stackoverflow.com/questions/4679782/can-i-use-coffeescript-instead-of-js-for-node-js">a question on StackOverflow</a> asking about <strong>CoffeeScript</strong>, then I looked at <a href="http://jashkenas.github.com/coffee-script/">CoffeeScript's home page</a>.</p>
+
+<p>When I saw the example CoffeeScript in that page, compared to the compiled JavaScript, I had a feeling that I want to try to use it. The code indeed looked a lot less messy! And because CoffeeScript works with Node.js (it is available as a Node.js package), I went on with Node.js.</p>
+
+<h2>First Round</h2>
+
+<p>The first round started after I first knew CoffeeScript for less than 1 day. A day before that, I ported my old library for use in Code Jom written in JavaScript into CoffeeScript and used it.</p>
+
+<p>Surprisingly, I felt very comfortable. I felt like I still have all the power of JavaScript, but in a new, cleaner syntax. I finished the first round with a score of 9 (out of 14, ranked third).</p>
+
+<h2>Final Round</h2>
+
+<p>I prepared for the final round by familiarizing myself with CoffeeScript. I made a simple mashup webapp called <a href="http://dtinth.github.com/crew-standings/">Crew Standings</a> in CoffeeScript and using jQuery and YQL.</p>
+
+<p>Because I planned it a bit wrong and went on working on the main scope, things got messed up when I create functions as sometimes it use the variables outside the function's scope (because I used a variable name outside that scope.</p>
+
+<p>But JavaScript (and CoffeeScript) is specialized in string handling, for example, when I need to get the first digit of a number, I can just convert the number to a string and use it. When I want to match a pattern from a string, I simply check the string if it matches a regular expression.</p>
+
+<p>I couldn't do some questions that is based on some algorithm, where some others would be able to do it easily. For example, I was a bit too excited to be able to do the knapsack question.</p>
+
+<p>Also, a lack of fixed multidimensional arrays in JavaScript made things a bit harder, my solution is to put it in an object:</p>
+
+<pre><code>price[p + '-' + m] = ......
+</code></pre>
+
+<p>But that looked ugly and less straightforward than built-in fixed multidimensional arrays like in C where you can <code>int price[1000][1000];</code></p>
+
+<p>However, I did it. My team got the first place for the student level.</p>
+
+<h2>The Library</h2>
+
+<p>I ported the last year's library to CoffeeScript, so that I don't have to learn all the new set of functions.</p>
+
+<p>I used a simple hack for forcing functions into the global scope</p>
+
+<pre><code>(-&gt; # force global scope
+
+    @print = (x...) -&gt;
+        sys.print y + '\n' for y in x
+
+).call null
+</code></pre>
+
+<p>Anything that got added to <code>this</code> will be added to the global scope, thanks to CoffeeScript, <code>this.name</code> can be called <code>@name</code>, so the above code added <code>print</code> function to the global scope.</p>
+
+<p>Here is the full library script:</p>
+
+<script src="https://gist.github.com/807654.js"></script>
+
+<p>And a small example:</p>
+
+<pre><code>require './LIBRARY'
+
+for testcase in [1..scanNumber()]
+    n = scanNumber()
+    print (n * (n + 1)) / 2
+</code></pre>

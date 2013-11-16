@@ -1,0 +1,40 @@
+---
+layout: "from_old_blog"
+title: "Mac OS X's say command"
+permalink: "/2009/03/macsay/"
+featured: false
+---
+
+<p>This isn't new at all, but I like it a lot. The <code>say</code> command is very handy when you want your Mac to say something.
+You can use the say command from the terminal, via SSH, or on a web application that can execute the <code>say</code> command on the Mac.</p>
+
+<p>Lately, I made a small web app running on the Mac, with an intention to access it from localhost only.
+I made an app that basically searchs for tweets that matches a predefined query every once a while, show it on the screen with a very big font, and read it aloud. That way, if I am near my MacBook but I am working on my PC, I can just listen to the tweet. If I am far from the MacBook or can't hear it clearly, I can just look at the screen.</p>
+
+<p>The following code will only work when you host the script on your Mac. If you access the script on other PC, it will still read aloud on your Mac.</p>
+
+<p>Here is the PHP code I use in order for a Mac to say:</p>
+
+<pre><code>&lt;?php exec ('say ' . escapeshellarg(stripslashes($_GET['q']))); ?&gt;
+</code></pre>
+
+<p>And the JavaScript code.</p>
+
+<pre><code>function say(something, callback) {
+
+     var x = new XMLHttpRequest();
+     // all browsers on the mac already supports xmlhttprequest
+     // except the ancient ones
+
+     x.open ('get', 'say.php?q=' + encodeURIComponent(something), true);
+     x.onreadystatechange = function() {
+         if (x.readyState == 4) {
+             if (callback) (callback) ();
+         }
+     };
+     x.send ('');
+
+}
+</code></pre>
+
+<p>Now you can go ahead and implement whatever the hell you want.</p>

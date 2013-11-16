@@ -1,0 +1,75 @@
+---
+layout: "from_old_blog"
+title: "Userscript: Drag and Drop Upload for upic.me, making of"
+permalink: "/2010/08/upic-dragdrop-upload/"
+featured: false
+---
+
+<p>I have just seen upic.me's new style. It looks really nice. At the same moment, I feel that it would be nice to be able to drag and drop pictures from my computer to upload that picture. I knew it was possible because <a href="http://hacks.mozilla.org/2010/02/an-html5-offline-image-editor-and-uploader-application/">I have seen this</a>. So I started coding and here's the result:</p>
+
+<p
+class="center" ><a href="http://userscripts.org/scripts/show/83671"><strong>upic.me Drag and Drop Upload</strong></a></p>
+
+<p>After installing this userscript, try going to <a href="http://upic.me/">http://upic.me/</a>. The box should say "drop here to upload picture" instead of "click there to upload picture." Try draging some pictures from your computer and drop it on the website. The image you dragged should upload right away.</p>
+
+<p>This best thing about this is it handles file uploading by itself. It does not require Flash at all.</p>
+
+<hr />
+
+<p><strong>Update 2012-06-29:</strong> Now we have the <strong>FormData API</strong>, the following is not needed anymore!</p>
+
+<p>Also, the code here is extremely outdated and uses unsupported nonstandard deprecated APIs such as <code>file.getAsBinary</code> and <code>xhr.sendAsBinary</code> that no longer work in any browser anymore. <em>Just use the FormData API!</em></p>
+
+<hr />
+
+<p><del>If you want to implement this on your own userscript or your website, feel free to copy it from my code. You should also read this to learn how to setup drop boxes: <a href="https://developer.mozilla.org/en/using_files_from_web_applications#Selecting_files_using_drag_and_drop">Using files from web applications#Selecting files using drag and drop</a>.</del></p>
+
+<p><del>The uploading part is the one of the hardest parts. That is because you need to create the POST request payload by yourself.</del></p>
+
+<p>To do this, first, you can just set up XMLHttpRequest normally.</p>
+
+<pre><code>    var xhr = new XMLHttpRequest();
+    xhr.open ('POST', '/upload.php');
+    xhr.onreadystatechange = function() {
+        // ...
+    };
+</code></pre>
+
+<p>Then make a progress listener if you want to keep track of the progress.</p>
+
+<pre><code>    xhr.upload.addEventListener ('progress', function(e) {
+        if (e.lengthComputable) {
+            // e.loaded = amount of data sent
+            // e.total = total amount of data
+        }
+    }, false);
+</code></pre>
+
+<p>Now we need to prepare the payload the boundaries.</p>
+
+<pre><code>    var payload = '';
+    var boundary = '---------------------------53748593789457348248012312';
+</code></pre>
+
+<p>So I made this 2 utility functions that will help you.</p>
+
+<p>The first function adds a normal field data to the payload. You will use this for normal form input fields, such as hidden or text input.</p>
+
+<p>The second function receives a <a href="https://developer.mozilla.org/en/DOM/File">HTML5 File</a> object and adds it to the payload.</p>
+
+<pre><code>    function addFormField(name, value) {
+        payload += '\r\nContent-Disposition: form-data; name="' + name + '"\r\n\r\n' + value + '\r\n--' + boundary;
+    }
+    function addFile(name, fileName, file) {
+        payload += '\r\nContent-Disposition: form-data; name="' + name + '"; filename="' + fileName + '"\r\nContent-Type: ' + file.type + '\r\n\r\n' + file.getAsBinary() + '\r\n--' + boundary;
+    }
+</code></pre>
+
+<p>So after you prepare the payload using these 2 functions, now we have a huge string of data waiting to be sent to the server, so now let's upload it!</p>
+
+<pre><code>    xhr.setRequestHeader("Content-Type", "multipart/form-data, boundary="+boundary);
+    xhr.setRequestHeader("Content-Length", payload.length);
+    xhr.sendAsBinary (payload);
+</code></pre>
+
+<p>If you want, you can also <a href="http://userscripts.org/scripts/review/83671">see the source code of my userscript</a>. That's it for today's blog post.</p>

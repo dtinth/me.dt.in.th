@@ -1,0 +1,55 @@
+---
+layout: "from_old_blog"
+title: "You Can Distort Time. At Least in JavaScript."
+permalink: "/2010/09/time-distortion/"
+featured: false
+---
+
+<p>Tested on Firefox. Untested on other browsers. :P</p>
+
+<p>Couple of hours ago something crazy came to my head. I want to control the flow of time by manipulating the Date() constructor and see what's gonna happen.</p>
+
+<script src="https://gist.github.com/570289.js"></script>
+
+<p>So I wrote this code. This JavaScript code makes the Date() constructor slow down 4 times.</p>
+
+<p>For example, if I inject the JavaScript at 12:00 PM, then wait 4 minutes, and check the current time, it will say 12:01 PM. You get the point.</p>
+
+<p>The setInterval and setTimeout function is also modified to be slower.</p>
+
+<p>As a live example, I have included the script on this page too. All animations on this page will be 4 times slower! Compare it with the home page!</p>
+
+<div><script type="text/javascript">(function() {
+
+    var factor = 0.25;
+
+    var _Date = Date;
+    var _setTimeout = setTimeout;
+    var _setInterval = setInterval;
+    var start = new _Date().getTime();
+    Date = function(a,b,c,d,e,f,g) {
+        if (arguments.length == 0) {
+            return new _Date(start + (new _Date().getTime() - start) * factor);
+        }
+        return _Date(a,b,c,d,e,f,g);
+    };
+    setTimeout = function(x, y) {
+        return _setTimeout.call(window, x, y / factor);
+    };
+    setInterval = function(x, y) {
+        return _setInterval.call(window, x, y / factor);
+    };
+
+})();</script></div>
+
+<p>You can also have the <a href="javascript:(function () {var factor = 0.25;var _Date = Date;var _setTimeout = setTimeout;var _setInterval = setInterval;var start = (new _Date).getTime();Date = function (a, b, c, d, e, f, g) {if (arguments.length == 0) {return new _Date(start + ((new _Date).getTime() - start) * factor);}return _Date(a, b, c, d, e, f, g);};setTimeout = function (x, y) {return _setTimeout.call(window, x, y / factor);};setInterval = function (x, y) {return _setInterval.call(window, x, y / factor);};})();">slow down</a> bookmarklet.</p>
+
+<p>Try it! Drag the bookmarklet to the bookmarks bar, and then go to some site with animation effects (for example, <a href="http://jquery.com/">http://jquery.com/</a>) and activate it. You will see that all the animations in the page will be 4x slower.</p>
+
+<p>The bookmarklet will not work with some websites or JavaScript frameworks that keeps the original Date constructor and use it, but as far as I know, jQuery always use the Date constructor currently present in <code>window</code>.</p>
+
+<p>This bookmarklet will not work with CSS transitions.</p>
+
+<p>........................</p>
+
+<p>I'll see if I can do something fun with this.</p>

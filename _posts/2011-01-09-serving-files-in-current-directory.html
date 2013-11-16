@@ -1,0 +1,22 @@
+---
+layout: "from_old_blog"
+title: "Serving Files in Current Directory, the Quickest Way"
+permalink: "/2011/01/serving-files-in-current-directory/"
+featured: false
+---
+
+<p>I need to test some HTML files in other web browsers on other computers, but I don't want to temporarily move/copy/symlink these files to Apache's directory. I found the solution:</p>
+
+<p>From the <a href="http://docs.python.org/library/simplehttpserver.html">docs</a>,</p>
+
+<pre><code>python -m SimpleHTTPServer 8000
+</code></pre>
+
+<p>Serves files in current directory to everyone connecting to port 8000! Change the port number as needed.</p>
+
+<p>So I added this to my <code>.bash_profile</code>.</p>
+
+<pre><code>alias serve="python -m SimpleHTTPServer"
+</code></pre>
+
+<p>Note: If you don't specify a port number, this one defaults to port 8000. So you can just type <code>serve</code>.</p>

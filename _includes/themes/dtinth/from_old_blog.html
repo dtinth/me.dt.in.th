@@ -1,0 +1,72 @@
+
+<div class="me-content">
+<div class="me-center-align">
+
+
+<article id="main-article" class="old-blog-article">
+
+<h1 class="me-head oldblog-head"><span class="date-placeholder">
+  <span class="date"><span class="date-text">{{ page.date | date: '%A, %B %-d, %Y' }}<dfn>: </dfn></span></span></span
+>{{ page.title }} <small>&laquo; <a href="/old/">from the old blog archive</a> &raquo;</small></h1>
+
+<div class="me-content-data">
+  {% if page.preamble %}
+  {{ page.preamble | markdownify }}
+  {% endif %}
+  {{ content }}
+</div>
+
+<footer>
+  <div class="me-content-data">
+    <ul class="me-meta" id="me-meta">
+      <li>author: <a rel="author" href="http://dt.in.th/">Thai Pangsakulyanont</a>
+      <li><a href="<%= content.url %>">permalink to this page</a>
+      <li><a href="/">back to homepage</a>
+    </ul>
+  </div>
+</footer>
+
+</article>
+
+<div class="me-no-comments" id="me-responses-view">
+  <div class="me-content-data me-responses-button" id="me-responses-button">
+    <h2><a id="me-responses-link" href="#disqus_thread">add / view all comments</a></h2>
+  </div>
+  <div id="me-responses">
+    <div class="me-content-data"><h2>Responses</h2></div>
+    <div class="me-responses">
+      <div id="disqus_thread"></div>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var disqus_shortname = 'dtinth';
+var disqus_developer = 0;
+var disqus_identifier = (function(path) {
+  var m
+  m = path.match(/page\/([^\/]+)/)
+  if (m) {
+    return 'post-' + m[1]
+  }
+})(location.pathname)
+var disqus_title = "{{ page.title }}";
+
+(function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(s);
+}());
+document.getElementById('me-responses-link').setAttribute('data-disqus-identifier', disqus_identifier);
+document.getElementById('me-responses-link').onclick = function() {
+  document.getElementById('me-responses-view').className = 'me-show-comments';
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+};
+</script>
+
+</div>
+</div>

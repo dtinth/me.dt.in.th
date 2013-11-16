@@ -1,0 +1,159 @@
+---
+layout: "from_old_blog"
+title: "JScript Hypertext Preprocessor"
+permalink: "/2009/12/jscript-hypertext-preprocessor/"
+featured: true
+---
+
+<p>I and my team are in a HTML website making competition. We can use only text editors and other tools unrelated to building websites. Here's what they have</p>
+
+<ul>
+    <li>Windows XP</li>
+    <li>Adobe Photoshop</li>
+    <li>Macromedia Flash (Yes, Macromedia.)</li>
+</ul>
+
+<p>I asked the staff to let my team install some more applications:</p>
+
+<ul>
+    <li>Notepad2</li>
+    <li>GIMP</li>
+</ul>
+
+<p>With these 2 applications, I can write HTML codes more comfortable.</p>
+
+<p>But I still need a way to quickly generate templates (e.g. the header, menu, footer) so when I change something I don't have to edit all the files. Something like a templating system. It makes me think of Windows Scripting Host. What about making a .bat file that runs a JScript script that processes text file?</p>
+
+<p>So I wrote this something that I call it "JScript Hypertext Preprocessor." I will start by creating a working directory for the web. In this post I will refer as <strong>"C:\Web"</strong>. Create the directory structure as follows:</p>
+
+<ul>
+    <li><strong>C:\Web</strong> - The working directory.</li>
+    <li><strong>C:\Web\Dev</strong> - All the website files will stay in here.</li>
+    <li><strong>C:\Web\Dev\include</strong> - The .jshp files that you don't want to make it publicly available.</li>
+</ul>
+
+<p>And these 2 little file.</p>
+
+<p><strong>C:\Web\Build.bat</strong></p>
+
+<pre>cd %0\..
+
+cd Dev
+for /r %%i in (*.jshp) do wscript ..\Eval.js %%i
+cd ..
+
+del /s /q Publish
+xcopy /s /i Dev Publish
+cd Publish
+del /s *.jshp
+rmdir /s /q include
+cd ..</pre>
+
+<p><strong>C:\Web\Eval.js</strong></p>
+
+<pre>var _sh = WScript.createObject('WScript.Shell');
+var _fs = WScript.createObject('Scripting.FileSystemObject');
+var _sn = WScript.arguments(0);
+var _ob = '';
+
+function alert(x) {
+    _sh.popup (x + '');
+}
+
+function include(x) {
+    var file = _fs.openTextFile(x, 1);
+    var content = file.readAll();
+    file.close ();
+    return content.replace(/[^&lt;]+|\&lt;\?jshp([\s\S]*?)\?\&gt;\s*|\&lt;\?=([\s\S]*?)\?\&gt;\s*|[\s\S]/g, function(a, b, c) {
+        if (b) {
+            return b + '\n';
+        }
+        if (c) {
+            return 'output(\'\' + eval(unescape(\'' + escape(c) + '\')));\n';
+        }
+        return 'output(unescape(\'' + escape(a) + '\'));\n';
+    });
+}
+
+function output(x) {
+    _ob += (x);
+}
+
+echo = output;
+print = output;
+
+function output_file() {
+    if (_ob.match(/^\s*$/)) return;
+    var file = _fs.createTextFile(_sn.substr(0, _sn.length - 4) + 'html', true);
+    file.write (_ob);
+    file.close ();
+}
+
+eval (include(_sn));
+output_file ();</pre>
+
+<p>Very tiny, isn't it?</p>
+
+<p>Now, to use it, I will show you some bit of code.</p>
+
+<p>C:\Web\Dev\index.jshp</p>
+
+<pre>&lt;?jshp eval(include('include/config.jshp')) ?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;title&gt;Homepage - &lt;?= siteTitle; ?&gt;&lt;/title&gt;
+&lt;body&gt;
+&lt;h1&gt;PI = &lt;?=Math.PI?&gt;!!&lt;/h1&gt;
+&lt;p&gt;&lt;?jshp
+     showGenerated ();
+?&gt;&lt;/p&gt;
+&lt;/body&gt;</pre>
+
+<p>C:\Web\Dev\include\config.jshp</p>
+
+<pre>&lt;?jshp
+
+var siteTitle = 'My Web Site Title';
+
+function showGenerated() {
+ print ('Generated: ' + new Date().toString());
+}
+
+?&gt;</pre>
+
+<p>Then double click on "Build.bat".</p>
+
+<p>If you go and look into the "Dev" directory, you will see that "index.html" file is generated. It is generated from .jshp file.</p>
+
+<p><a href="/images/old/pi.png"><img class="size-full wp-image-55 alignnone" title=".html file is generated from .jshp file." src="/images/old/pi.png" alt=".html file is generated from .jshp file." width="563" height="312" /></a></p>
+
+<p>You will note that there is also a directory called "Publish."</p>
+
+<p>That directory is, in fact, a copy of the "Dev" directory, with .jshp files and the include directory removed.</p>
+
+<p>Here are the list of functions you can use:</p>
+
+<ul>
+    <li>Functions from JScript.</li>
+    <li>alert(text) - Displays an alert.</li>
+    <li>output(blah), print(blah), echo(blah) - Prints the text into the .html file.</li>
+    <li>eval(include('filename')) - Like include in PHP.</li>
+    <li>print(include('filename')) - Like readfile in PHP.</li>
+</ul>
+
+<p>The open and close tags are &lt;?jshp and ?&gt;. I use the PHP styles because text editors with syntax highlighting will treat it as PHP code.</p>
+
+<p>Oh and about the competition, here is the list of scoring points:</p>
+
+<ul>
+    <li>Use frames (10 points)</li>
+    <li>Beautifulness of design (10 points)</li>
+    <li>Use of animations (10 points)</li>
+    <li>Content layouts (10 points)</li>
+    <li>And something I didn't remember (10 points)</li>
+</ul>
+
+<p>I didn't use frames because I can't remember how to write it. However I used an iframe on one page. I hope that it counts as frames!</p>
+
+<p>For animations, I just use a subtle animation in the header part so that it does not distract the whole page.</p>
+
+<p>When the result is out I will tell you.</p>

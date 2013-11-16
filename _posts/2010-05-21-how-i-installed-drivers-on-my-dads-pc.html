@@ -1,0 +1,29 @@
+---
+layout: "from_old_blog"
+title: "How I installed drivers on my dad's PC."
+permalink: "/2010/05/how-i-installed-drivers-on-my-dads-pc/"
+featured: false
+---
+
+<p>I just re-installed Windows for my dad's PC. It does not come with any drivers.</p>
+
+<p>I can't set the screen resolution, I can't play sounds, I can't go to the Internet to download drivers. The first thing that came to my mind is to use Ubuntu.</p>
+
+<p>I inserted the Ubuntu Live CD, and I found out that everything works! So I used it to find out the drivers I need, and I downloaded them and installed them.</p>
+
+<p>So, here's how to do it.</p>
+
+<ol>
+<li>Insert Ubuntu Live CD and boot.</li>
+<li>Go to <strong>System</strong>, then <strong>Administration</strong>, then <strong>Software Sources</strong></li>
+<li>Enable the <strong>universe</strong>.</li>
+<li>Select the mirror close to you.</li>
+<li>Close but do not update yet.</li>
+<li>Open <strong>gnome-terminal</strong>.</li>
+<li><code>sudo apt-get update</code></li>
+<li><code>sudo apt-get install hardinfo</code></li>
+<li><code>hardinfo</code></li>
+<li>Click on the generate report thing. Save your report file somewhere.</li>
+<li>Copy the report to your flashdrive, or scp it to other unix PC.</li>
+<li>Now, on another PC with internet access, open the report that you have just copied. Look for the PCI section, go and download the driver from manufacturer's website. Copy it, and install it. I recommend that you install the network / wifi drivers first, so you can continue on that computer.</li>
+</ol>

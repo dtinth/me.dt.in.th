@@ -1,0 +1,41 @@
+---
+layout: "from_old_blog"
+title: "Fix Thai Language Floating Tone Marks Problem in mPDF"
+permalink: "/2010/11/mpdf-thai-tone-marks/"
+featured: false
+---
+
+<p>I am working for my school's exhibition web site, which allows students from other schools to register for various competitions and activities in the exhibition day.</p>
+
+<p>At first, there was only a registration website. Later, I am informed that it should be able to generate the report as PDF file, so it could be printed and handed to the academic administration department quickly.</p>
+
+<p>I searched for a PDF generation libraries and decided to use <a href="http://mpdf.bpm1.com/">mPDF</a> because its partial support HTML and CSS is really nice and it has UTF-8 support (the database is utf8 encoded).</p>
+
+<p
+class="center" >All is going well, except for some floating tone marks that looks too high.</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-11/26-2157.png" alt=""></p>
+
+<p
+class="center" >I wrote a little function that fixes this, it now looks like this:</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-11/26-2159.png" alt=""></p>
+
+<p
+class="center" >As you see, the tone marks do not look to high anymore. Here is the code:</p>
+
+<script src="https://gist.github.com/716814.js"></script>
+
+<p
+class="center" >To use it, just before added some data to the PDF, wrap it in thai() function. For example,</p>
+
+<pre><code>$pdf-&gt;WriteHTML ($table-&gt;getHTML());
+</code></pre>
+
+<p
+class="center" >...becomes...</p>
+
+<pre><code>$pdf-&gt;WriteHTML (thai($table-&gt;getHTML()));
+</code></pre>
+
+<p>And that's it. I hope that this can be useful for some people generating PDFs with Thai language.</p>

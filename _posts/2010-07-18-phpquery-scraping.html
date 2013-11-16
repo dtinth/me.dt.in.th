@@ -1,0 +1,32 @@
+---
+layout: "from_old_blog"
+title: "phpQuery makes scraping a hell lot easier."
+permalink: "/2010/07/phpquery-scraping/"
+featured: false
+---
+
+<p>phpQuery is a PHP port of jQuery, so if you know how to use jQuery and PHP, you can easily use phpQuery. It's really awesome.</p>
+
+<p>You just need to see it: <strong><a href="http://code.google.com/p/phpquery/">http://code.google.com/p/phpquery/</a></strong></p>
+
+<p>I am using phpQuery for my <a href="http://tnk.dt.in.th/">DJMAX TECHNIKA Score Tracker</a>'s backend code which fetchs the score from Platinum Crew's website and puts it in MySQL table every 4 hours, which is then used by the frontend. It also uses the <a href="http://www.sicomonline.com/forum/index.php?topic=6143.0">DJMAX Technika API</a> (Thailand only ;)) to fetch some data instead of scraping in order to save bandwidth.</p>
+
+<p>I made a simple utility function that makes scraping tabular data from web pages a lot easier.</p>
+
+<script src="https://gist.github.com/480475.js?file=parsedoc.php"></script>
+
+<p>All you need to do is throw in a selector for each column on that page. Just make sure that the selector for each column yields the same number of matching element, and then the function uses a parser function, which you define, to take that element and turn it into value.</p>
+
+<p>You can find the selector for the column you want easily using <a href="http://www.selectorgadget.com/">SelectorGadget</a>.</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-07/18-2231.png" alt=""></p>
+
+<p>For example, the following code scans the <a href="http://www.djmax.in.th/technika/rankDJTitle.asp">DJ Title Rank</a> page from Platinum Crew (Thailand)'s website for top 15 DJs.</p>
+
+<script src="https://gist.github.com/480475.js?file=test-phpquery.php"></script>
+
+<p>Note that the callback function that I use is a class member of the PCParser class. That's why you see the callback function in arrays. Now here's the output.</p>
+
+<script src="https://gist.github.com/480475.js?file=output.txt"></script>
+
+<p>It works like a charm. Whenever the website's design is updated or changed, I just update these selectors (using SelectorGadget gives me the selector in less than one minute) and everything works again.</p>

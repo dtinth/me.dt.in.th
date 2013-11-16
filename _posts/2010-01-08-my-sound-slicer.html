@@ -1,0 +1,70 @@
+---
+layout: "from_old_blog"
+title: "My sound slicer"
+permalink: "/2010/01/my-sound-slicer/"
+featured: false
+---
+
+<p>(This article should be very confusing for you to read, sorry, but I can't explain this tool I made very well)</p>
+
+<p>When I was very new to BMS making I use Audacity to slice the sounds to make keysounds manually. It's very tiresome!</p>
+
+<p>So I made a tool to slice the wav files into parts. Written in PHP:</p>
+
+<p><strong>GitHub</strong>: <a href="https://github.com/dtinth/sound-slicer">https://github.com/dtinth/sound-slicer</a></p>
+
+<p>Then, for example, I have a .wav file called "x.wav", I need to make a text file called "x.txt" and type in some beats.</p>
+
+<p><strong>Syntax:</strong></p>
+
+<pre><code>120bpm
+16th
+,..,..,. ,..,..,.
+,...,... ,...,.,.
+12th
+,,,,,, ,,,,,,
+</code></pre>
+
+<p>Here are the explainations.</p>
+
+<ul>
+<li>120bpm -&gt; The BPM of the wav file is 120 (changes the tempo, affects the commands after it)</li>
+<li>16th -&gt; 1 measure is divided into 16 steps (changes the step size, will affect the commands after it)</li>
+<li>, -&gt; Starts a new wave file and put 1 step into that file.</li>
+<li>. -&gt; Put 1 step into the last file.</li>
+<li>Other texts are treated as comments.</li>
+</ul>
+
+<p>So from the above text file, the application would slice the wav file like this:</p>
+
+<ul>
+    <li>0.000 sec</li>
+    <li>0.375 sec</li>
+    <li>0.750 sec</li>
+    <li>1.000 sec</li>
+    <li>1.375 sec</li>
+    <li>1.750 sec</li>
+    <li>2.000 sec</li>
+    <li>2.500 sec</li>
+    <li>3.000 sec</li>
+    <li>3.500 sec</li>
+    <li>3.750 sec</li>
+    <li>4.000 sec</li>
+    <li>4.167 sec</li>
+    <li>4.333 sec</li>
+    <li>4.500 sec</li>
+    <li>4.667 sec</li>
+    <li>4.833 sec</li>
+    <li>5.000 sec</li>
+    <li>5.167 sec</li>
+    <li>5.333 sec</li>
+    <li>5.500 sec</li>
+    <li>5.667 sec</li>
+    <li>5.833 sec (and lasts for 0.167 seconds)</li>
+</ul>
+
+<p>The generated files will be saved in the folder called "wav". You can them import and use in BMSE.</p>
+
+<hr />
+
+<p><strong>Update 2012-06-23</strong>: Updated links to GitHub.</p>

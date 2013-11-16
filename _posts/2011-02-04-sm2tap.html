@@ -1,0 +1,87 @@
+---
+layout: "from_old_blog"
+title: "Converting StepMania Stepcharts to Tap Studio"
+permalink: "/2011/02/sm2tap/"
+featured: false
+---
+
+<p><a href="http://itunes.apple.com/us/app/tap-studio-3/id393451834?mt=8"><strong>Tap Studio 3</strong></a> is a nice game, but is full of off-synced tapcharts.</p>
+
+<p>This is mainly because of the way the tapcharts are made: It plays the song, the user records the tapchart as the song plays. When the song finishes, you get a tapchart ready to play. In Tap Studio 3, it has a basic UI for editing taps, but you can't be sure that it syncs well with the song, and it fells unresponsive too.</p>
+
+<p>Few days ago, I tried making my own taps, but each song took me a lot of time, because when I record, there will be an error in some point in the song (missing taps, extra taps, offbeat taps).</p>
+
+<h2>StepMania is Much Better At Making Notecharts!</h2>
+
+<p>Making stepcharts in StepMania is much more fun. You can record notes into your stepchart, or you can choose to add notes one by one. It has a lot of tools that you can use to fine-tune and sync your stepchart.</p>
+
+<p>Also, most of the already available simfiles on the Internet are pretty time-accurate.</p>
+
+<p>So I made a small Python script to convert my <code>.sm</code> files to be playable on Tap Studio, so I can play them anywhere.</p>
+
+<h2>Prerequisites</h2>
+
+<p>To be able to convert <code>.sm</code> files for playing in Tap Studio, you need:</p>
+
+<ul>
+<li>A Mac.</li>
+<li>A jailbroken iDevice, with an SSH server installed.</li>
+<li>Tap Studio (either version 2 or version 3 will do).</li>
+<li><a href="https://github.com/dtinth/sm2tap">sm2tap</a>.</li>
+</ul>
+
+<h2>Converting Stepcharts</h2>
+
+<h3>Song Initialization</h3>
+
+<p>First, you need to have the song you want to convert in your device.</p>
+
+<p>Then, you need to initialize a song. Open Tap Studio, then go to your song library and pick a song you want. After that, press <strong>Record</strong>. After the song starts, record <strong>only one note</strong> and <strong>save it</strong>.</p>
+
+<h3>Copying the Song to Your Mac</h3>
+
+<p>Then, SSH to your device, or run a terminal on your device <strong>as <code>mobile</code> user</strong>, and then issue this command:</p>
+
+<pre><code>find Applications -name '*.tapd'
+</code></pre>
+
+<p>This should list all the tapfiles you have and the locations where they reside in. Copy the tap file you just created (the one with the song name) to your Mac.</p>
+
+<h3>Converting StepMania Notes to Tap Studio Notes</h3>
+
+<p>On your Mac, you need to convert the <code>.tapd</code> file into an XML file.</p>
+
+<p>Open a Terminal, and then type in</p>
+
+<pre><code>plutil -convert xml1
+</code></pre>
+
+<p>then press space, then drag the <code>.tapd</code> file into the terminal window, and then press Enter. You will see that the <code>.tapd</code> file will be slightly bigger.</p>
+
+<p>After that, type in:</p>
+
+<pre><code>python
+</code></pre>
+
+<p>Press space, and drag these files into the terminal window <strong>in order</strong>:</p>
+
+<ol>
+<li>My <code>convert.py</code> file.</li>
+<li>The <code>.sm</code> file.</li>
+<li>The <code>.tapd</code> file.</li>
+</ol>
+
+<p>Then go back to terminal and press enter. You should see a list of available step types that can be converted. Type in the name of the step type and press enter. Your <code>.tapd</code> file should be a lot bigger by now.</p>
+
+<p>Finally, to convert it back into binary format,</p>
+
+<pre><code>plutil -convert binary1
+</code></pre>
+
+<p>then press space, then drag the <code>.tapd</code> file into the terminal window, and then press Enter. The size of the <code>.tapd</code> file will be reduced.</p>
+
+<h3>Copying the Modified Notes Back to Device</h3>
+
+<p>Copy this file back into your device. You can now play your simfile on your device!</p>
+
+<p>Enjoy!</p>

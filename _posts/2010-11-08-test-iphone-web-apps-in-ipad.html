@@ -1,0 +1,36 @@
+---
+layout: "from_old_blog"
+title: "Test iPhone Web Apps in iPad"
+permalink: "/2010/11/test-iphone-web-apps-in-ipad/"
+featured: false
+---
+
+<p>I wanted to test how websites will look on iPhone on iPad because I don't want to buy another device. After a bit of hacking, I found the solution, but you need a jailbroken iPad.</p>
+
+<p>Here's how (<strong>try it at your own risk!</strong>):</p>
+
+<p>First, you need to ssh to your iPad, then</p>
+
+<pre><code>cd /Applications/
+cp -R MobileSafari.app/ MobileSafari01.app
+</code></pre>
+
+<p>This duplicates MobileSafari app. (Thanks to <a href="http://modmyi.com/forums/native-iphone-ipod-touch-app-discussion/530541-duplicate-any-application.html">this guide on how to duplicate any application</a>).</p>
+
+<p>Then open your file transfer program (I use <a href="http://cyberduck.ch/">Cyberduck</a>) and go to <code>/Applications/MobileSafari01.app/</code></p>
+
+<p>Download <code>Info.plist</code> to your computer, open it with Property List Editor.</p>
+
+<p>Change <code>CFBundleIdentifier</code> (or <code>Bundle identifier</code>) to <code>com.apple.mobilesafari01</code>. This makes iOS know that it's a separate application.</p>
+
+<p>Go to <code>UIDeviceFamily</code>, and then remove the item with the value <code>2</code>. This makes iOS run the application in iPhone mode.</p>
+
+<p>Save the file, upload it back, and respring. You will have another Safari icon.</p>
+
+<p>One will run in normal mode and another one will run in iPhone mode.</p>
+
+<p>Now you can see how web apps will look like in an iPhone, in iPad. Also, in iPhone mode, Safari will identify itself as an iPhone, instead of iPad!</p>
+
+<p>As the article points out, it will save the settings separately, as far as I have tried, I couldn't see a way to configure the iPhone Safari. If anyone did it, please let me know.</p>
+
+<p>Also, don't run two versions simultaneously, or they may clash with eachother.</p>

@@ -1,0 +1,23 @@
+---
+layout: "from_old_blog"
+title: "Blurry Text using CSS 3"
+permalink: "/2010/05/blurry-text-css/"
+featured: false
+---
+
+<p
+class="center" >This is an effect I have been using in a hidden feature of #thaiWitter, where a text pops up, and then blurs and fades away.</p>
+
+<p
+class="center" >I will show you how it looks like:</p>
+
+<p
+style="color:#fff;color:rgba(255,255,255,0);text-shadow:0 0 10px #fff;text-align:center" ><span style="font-size:4em;">Hello, World!</span></p>
+
+<p>This effect can be achieved using CSS3. By setting the text to transparent and give it a text shadow. However this won't work on WebKit, because on WebKit browsers, if a text is transparent, then its shadow is transparent too, so in the example above you see nothing. Don't know how it looks like on Opera because I don't care. Anyway here's the code:</p>
+
+<pre><code>color: rgba(255, 255, 255, 0);
+text-shadow: 0 0 10px #fff;
+</code></pre>
+
+<p>Oh and for IE, just use <code>progid:DXImageTransform.Microsoft.Blur</code> then. In fact it works for images too, not just text.</p>

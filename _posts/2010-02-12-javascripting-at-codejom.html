@@ -1,0 +1,54 @@
+---
+layout: "from_old_blog"
+title: "JavaScripting @ Code Jom"
+permalink: "/2010/02/javascripting-at-codejom/"
+featured: false
+---
+
+<p><strong>Update 2012-06-23</strong>: Now that we have Node.js, this isn't needed anymore. Yay!</p>
+
+<hr />
+
+<p>I've been to <a href="http://codejom.thailandoi.org/" target="_blank">Thailand Code Jom</a> today. It's a programming competition but it's focused on speed.</p>
+
+<p>Competitors can use any language they wish to use. It works by downloading a test case, run it through the program you wrote, and then upload the result. Pretty much like Google's Code Jam.</p>
+
+<p>My preferred language is JavaScript, and here's how I use JavaScript in this event:</p>
+
+<ul>
+<li>I installed <a href="http://en.wikipedia.org/wiki/SpiderMonkey_%28JavaScript_engine%29" target="_blank">SpiderMonkey JavaScript Engine</a> and it's JavaScript shell, so it can be called from terminal and other shell scripts.</li>
+<li>I wrote and used <a href="http://share11.appspot.com/40421" target="_blank">this PHP</a> script that takes the code, the input file, run it and spit out the output (both to the Terminal and to a file)</li>
+<li>The script takes 2 arguments: the code file name and the input file name.</li>
+<li>The script generates a script that stores the input file content in the variable called "input", includes the file "lib.js", and then pass the code to the function "runCode()"</li>
+<li>Here's <a href="http://share11.appspot.com/40422" target="_blank">the file lib.js</a>. It contains the frequently used functions and utility functions.</li>
+<li>After that, then run the script like this: <code>./run code.js input.txt</code></li>
+<li>Whatever the script prints out will be saved to a file CODEJOM_OUTPUT.txt</li>
+</ul>
+
+<p>Here's the functions in lib.js.</p>
+
+<ul>
+<li><strong>var x = scanNumber()</strong> scans a number from the input file and returns it, and remove it from the variable <code>input</code>. Pretty much like <code>scanf("%d", &amp;x);</code></li>
+<li><strong>var x = scanWord()</strong> scans a word (sequence of non-whitespace characters) and returns it, also remove it from the variable <code>input</code>.</li>
+<li><strong>var x = scanText()</strong> scans a line of text (non-whitespace characters followed by any characters except newline) and return it. Removes that line from the variable <code>input</code>. Like fgets'ing from stdin.</li>
+<li><strong>var x = scanArray()</strong> scans the entire input file into an array where each array element is one line.</li>
+<li><strong>generatePrimeDB(upto)</strong> generates all prime numbers upto a specific number. Returns a JavaScript object, which, if an element with that number as a key doesn't exist in the returned object, then it's a prime number. The object also contains a "list" property, which is an array of all prime numbers from 2 to the specified number.</li>
+<li>And the function <strong>runCode()</strong> which is internal to the run script, so don't use it in your code.</li>
+</ul>
+
+<p>Here's how simple the code for the <a href="http://codejom.thailandoi.org/samples/" target="_blank">second example in this page</a> can be.</p>
+
+<pre><code>var n = scanNumber();
+for (var i = 0; i &lt; n; i ++) {
+    var word = scanWord();
+    var len = scanNumber();
+    var o = [];
+    for (var j = 0; j &lt;= word.length - len; j++) {
+        o.push (word.substr(j, len));
+    }
+    o.sort ();
+    print (o[0]);
+}
+</code></pre>
+
+<p>By the way I forgot to include <a href="http://phpjs.org/functions/_phpjs_shared_bc:868" target="_blank">JavaScript Port of BCMath library</a> in the lib.js file. With it I could compute very large numbers easily.</p>

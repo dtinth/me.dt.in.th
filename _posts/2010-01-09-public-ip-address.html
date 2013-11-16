@@ -1,0 +1,22 @@
+---
+layout: "from_old_blog"
+title: "A Quick Way of Getting Your Public IP Address"
+permalink: "/2010/01/public-ip-address/"
+featured: false
+---
+
+<p>My ADSL USB MODEM that is connected directly to my server is broken. Now I need to use a router instead.</p>
+
+<p>However, I can't get noip2 to find my public IP Address, but there is noip2 -i (your ip address).</p>
+
+<p>So here is my solution:</p>
+
+<p>Whenever you want to use your public IP address, just type:</p>
+
+<pre><code>`curl http://ip.appspot.com/`
+</code></pre>
+
+<p>And that's it, so my noip2 command would be like:</p>
+
+<pre><code>sudo noip2 -i `curl http://ip.appspot.com/`
+</code></pre>

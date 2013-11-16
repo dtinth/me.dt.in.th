@@ -1,0 +1,74 @@
+---
+layout: "from_old_blog"
+title: "Abscapture - Take Screenshot with Transparency (for Linux)"
+permalink: "/2010/05/abscapture/"
+featured: true
+---
+
+<p>It has once been posted on my old blog, since my old blog is gone forever, I'm going to re-post this tool.</p>
+
+<p><strong>Abscapture</strong> is a tool written in Python that allows you to take screenshots with alpha transparency.</p>
+
+<p>This tools work by capturing 2 screenshots. The first screenshot is the object on black background. The second screenshot is the same object on white background. The application then merges these 2 images together using a simple algorithm, producing a alpha-blended version of it.</p>
+
+<p>Here is an overview of an algorithm.</p>
+
+<ul>
+<li><strong>Finding the alpha component</strong>. Because in each pixel, the red, green and blue components shares the same opacity (which is the alpha component), here is a way to find the alpha channel.
+<ul><li>Let B is the average of red, green and blue components of each pixel on the black image.</li>
+<li>Let W is the average of red, green and blue components of the same pixel on the white image.</li>
+<li>The transparency of that pixel in the resulting image is simply <strong>W - B</strong>. Imagine these examples.
+<ul><li>If the pixel is opaque, then B will be equal to W. The transparency is 0%.</li>
+<li>If the pixel is transparent, then B will be 0% and W will be 100%. The transparency is 100%.</li></ul></li>
+<li>The alpha/channel opacity is the  <strong>100% - transparency</strong> or <strong>100% - W + B</strong>.</li></ul></li>
+<li><strong>Finding the color component</strong>.
+<ul><li>Let V<sub>b</sub> be the value of a component (red, green, or blue) of a pixel on the black image.</li>
+<li>Let V<sub>w</sub> be the value of that component of that pixel on the white image.</li>
+<li>Let V<sub>r</sub> be the value of that component of that pixel on the resulting image.</li>
+<li>Let A be the opacity of that pixel (calculated using above formula).</li>
+<li>You can see that:
+<ul><li>V<sub>b</sub> will go towards 0% when opacity decreases, while V<sub>w</sub> will go towards 100% when opacity increases.</li></ul></li>
+<li>We can find V<sub>r</sub> by solving two simultaneous equation:
+<ul><li>V<sub>r</sub> * A = V<sub>b</sub></li>
+<li>V<sub>r</sub> * A = 100% - V<sub>w</sub></li></ul></li>
+<li>That means: V<sub>r</sub> = V<sub>b</sub> / A.</li>
+<li>There is a case where the pixel is transparent, A = 0. There is a need to check for it too or it's division by zero.</li></ul></li>
+</ul>
+
+<p
+class="center" >Now, let's see how the resulting image looks like:</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-05/17-2228.png" alt=""></p>
+
+<p
+class="caption" >Try it! Load the above image in GIMP and see the transparency for yourself.</p>
+
+<h2>Download!</h2>
+
+<p>Download it! <a href="http://tnk.dt.in.th/blog-data/2010-05/abscapture-2010-05-17.tar.gz">abscapture-2010-05-17.tar.gz</a></p>
+
+<h2 class="center">How to use abscapture?</h2>
+
+<p
+class="center" >First, install <a href="apt://scrot">scrot</a>.</p>
+
+<p
+class="center" >After you extract the files, double click on abscapture.py and click "run."</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-05/17-2241.png" alt=""></p>
+
+<p
+class="center" >A dialog box will open, telling you to <strong>set up the scene</strong>.</p>
+
+<p
+class="center" >Minimize all windows that you don't want in your screenshot. Leaving only the desktop, the panel and the windows you want. When you're ready, press OK. You will have 5 seconds to open up menus, tooltips, or additional elements you want in your screenshot.</p>
+
+<p class="oldblog-image"><img src="http://tnk.dt.in.th/blog-data/2010-05/17-2243.png" alt=""></p>
+
+<p>After 5 seconds, the desktop changes to white. About 3 seconds later, the desktop changes to back. 3 seconds and then the desktop returns to normal. A window with a progress bar will appear. Wait for it to finish. That window with progress bar closes automatically when finish. You will have the file <strong>result.png</strong> which is your screenshot!</p>
+
+<p><br /></p>
+
+<p>And again, I hope that someone will pick this up and improve this tool or incorporate the feature of this tool into other software.</p>
+
+<p>Please add a comment if you have done so, or if you just want to say thanks, that's OK too!</p>

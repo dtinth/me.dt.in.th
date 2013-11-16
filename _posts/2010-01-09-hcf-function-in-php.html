@@ -1,0 +1,30 @@
+---
+layout: "from_old_blog"
+title: "HCF Function in PHP"
+permalink: "/2010/01/hcf-function-in-php/"
+featured: false
+---
+
+<p>I just learned more about recursive functions.</p>
+
+<p>So I made this little function in PHP.</p>
+
+<pre><code>function hcf($a, $b) {
+    if ($b &gt; $a) return hcf($b, $a);
+    if ($b == 0) return $a;
+    return hcf($b, $a % $b);
+}
+
+function hcf_array($array) {
+    if (count($array) &lt; 1) return false;
+    if (count($array) == 1) return $array[0];
+    array_unshift ($array, hcf(array_shift($array), array_shift($array)));
+    return hcf_array($array);
+}
+</code></pre>
+
+<p>Function hcf($a, $b) finds the HCF of $a and $b.</p>
+
+<p>Function hcf_array($a) finds the HCF of array $a.</p>
+
+<p>May be useful in the future.</p>

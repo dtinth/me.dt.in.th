@@ -1,0 +1,26 @@
+---
+layout: "from_old_blog"
+title: "Monitoring Web Pages"
+permalink: "/2009/12/web-page-monitor/"
+featured: false
+---
+
+<p>My friends wanted my help. There is a locked forum topic that will open for reply in the next 20 minutes. He needs to reply on that topic as soon as it is available.</p>
+
+<p>I used this script.</p>
+
+<pre>#!/bin/bash
+URL='<strong>the url you want to monitor</strong>'
+MATCH='<strong>the text that if match, means that the topic is still locked</strong>'
+while true; do
+    if (curl "$URL" | grep "$MATCH"); then
+        echo '!!!!!!!!!!!!!!!!~ Not Yet'
+    else
+        echo '!!%$$%!%$#@$%#$%@%$%$!#%$!%%^!%^@%^!%^@!! NOW!'
+    fi
+    sleep 60
+done</pre>
+
+<p>So this bash script just periodically checks that page until the match is not found.</p>
+
+<p>The reason why I need to make a bash script is because I forgot to install the <a href="https://addons.mozilla.org/en-US/firefox/addon/115" target="_blank">ReloadEvery extension</a> for Firefox.</p>
