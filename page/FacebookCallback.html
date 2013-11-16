@@ -1,0 +1,18 @@
+---
+title: Facebook Callback
+layout: page
+permalink: /page/FacebookCallback/
+---
+<p class="center">Hold on a sec...<br>
+<script>
+var m;
+if (m = location.hash.match(/access_token=([^&]+)/)) {
+    document.write('<script src="https://graph.facebook.com/me?access_token=' + m[1] + '&callback=lol"></sc' + 'ript>');
+    lol = function(data) {
+        opener.obtainID(data.id);
+        window.close();
+    };
+} else {
+    document.write('Cannot obtain user ID');
+}
+</script></p>
