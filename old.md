@@ -12,7 +12,7 @@ For newest contents please <a href="{{ BASE_PATH }}/">go back to my home page</a
 {% if post.layout == 'from_old_blog' %}
 <li>
 <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
-<span class="date"> — {{ post.date | date_to_string }}</span>
+<span class="date"> — {{ post.date | date:site.data.date_format.short }}</span>
 </li>
 {% endif %}
 {% endfor %}

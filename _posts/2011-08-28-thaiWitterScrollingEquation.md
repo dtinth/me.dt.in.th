@@ -2,6 +2,7 @@
 layout: "post"
 permalink: "/page/thaiWitterScrollingEquation"
 title: "#thaiWitter Scrolling Equation"
+math: true
 preamble: |
   Since the beginning, thaiWitter has a characteristic about the way it scrolls from one place to another place.
   This article discusses, in mathematics style, about how it scrolls from one position to another.
@@ -21,15 +22,19 @@ This algorithm is almost identical to the original algorithm, but the time is us
 
 In acceleration phase:
 
-* The speed is $v_0 + kt_1$.
-* So the displacement is $x_0 + v_0t_1 + {1 \over 2}kt_1^2$.
+<ul>
+<li>The speed is $v_0 + kt_1$.
+<li>So the displacement is $x_0 + v_0t_1 + {1 \over 2}kt_1^2$.
+</ul>
 
 
 In deceleration phase:
 
-* The speed is $-\mu x$.
-* Solve the differential equation, you get $c_0 e^{-\mu t_2}$.
-* Substitute it in the speed (or differentiate it!) to get $-\mu c_0 e^{-\mu t_2}$.
+<ul>
+<li>The speed is $-\mu x$.</li>
+<li>Solve the differential equation, you get $c_0 e^{-\mu t_2}$.</li>
+<li>Substitute it in the speed (or differentiate it!) to get $-\mu c_0 e^{-\mu t_2}$.</li>
+</ul>
 
 
 Put the 2 phase one after another:
@@ -51,23 +56,23 @@ $$ a = {1 \over 2} \mu k $$
 
 $$ b = -\mu v_0 + k $$
 
-$$ c = -\mu x_0 - v_0 $$
+$$ c = -\mu x\_0 - v\_0 $$
 
 $$ t_c = { -b + \sqrt{ b^2 - 4ac } \over 2a } $$
 
 Let $x$ be the distance to target after $t$ frames, $x$ is defined as:
 
-$$ x = \left\\{ \begin{array}{l l}
-(x_0 + v_0 t_c - {1 \over 2} k {t_c}^2 ) e^{-\mu (t - t_c)} & t \ge t_c \\\\
-x_0 + v_0 t - {1 \over 2} k t^2 & t < t_c
-\end{array} \right. $$
+<p>$$ x = \begin{cases}
+  (x_0 + v_0 t_c - {1 \over 2} k {t_c}^2) e^{-\mu (t - t_c)} & t \ge t_c \\[1em]
+  x_0 + v_0 t - {1 \over 2} k t^2 & t < t_c
+\end{cases} $$</p>
 
 Let $v$ be the current scrolling speed after $t$ frames, $v$ is defined as:
 
-$$ v = \left\\{ \begin{array}{l l}
--\mu(x_0 + v_0 t_c - {1 \over 2} k {t_c}^2 ) e^{-\mu (t - t_c)} & t \ge t_c \\\\
-v_0 - k t & t < t_c
-\end{array} \right. $$
+<p>$$ v = \begin{cases}
+  -\mu(x_0 + v_0 t_c - {1 \over 2} k {t_c}^2 ) e^{-\mu (t - t_c)} & t \ge t_c \\[1em]
+  v_0 - k t & t < t_c
+\end{cases} $$</p>
 
 
 

@@ -1,0 +1,3 @@
+
+long: '%A, %B %-d<sup data-of="%-d"></sup>, %Y'
+short: '%b %-d<sup data-of="%-d"></sup>, %Y'

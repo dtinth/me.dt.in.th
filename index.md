@@ -23,7 +23,7 @@ All Posts
 <li>
 <h3>
 <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
-<span class="date"> — {{ post.date | date_to_string }}</span></h3>
+<span class="date"> — {{ post.date | date:site.data.date_format.short }}</span></h3>
 {% if post.preamble %}
 <BLOCKQUOTE class=me-preamble>{{ post.preamble | markdownify }}<a href="{{ BASE_PATH }}/{{ post.url }}" class="read-more">&raquo; read more</a></BLOCKQUOTE>
 {% endif %}
@@ -42,7 +42,7 @@ From the Old Blog
 {% if post.featured %}
 <li>
 <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
-<span class="date"> — {{ post.date | date_to_string }}</span>
+<span class="date"> — {{ post.date | date:site.data.date_format.short }}</span>
 </li>
 {% endif %}
 {% endif %}
