@@ -27,16 +27,18 @@ Create a Google Apps Script
 
 Go to _Tools_ -> _Script Editor_ to create a script, paste in this code, and save:
 
-    function onEdit(e) {
-      var value = SpreadsheetApp.getActiveSpreadsheet().getSheets()
-          .filter(function(sheet) { return sheet.getName() != "JS" })
-          .map(function(sheet) {
-            return { name: sheet.getName(),
-                     values: sheet.getDataRange().getValues() };
-          });
-      SpreadsheetApp.getActiveSpreadsheet()
-        .getSheetByName("JS").getRange("B1").setValue(JSON.stringify(value));
-    }
+```javascript
+function onEdit(e) {
+  var value = SpreadsheetApp.getActiveSpreadsheet().getSheets()
+      .filter(function(sheet) { return sheet.getName() != "JS" })
+      .map(function(sheet) {
+        return { name: sheet.getName(),
+                 values: sheet.getDataRange().getValues() };
+      });
+  SpreadsheetApp.getActiveSpreadsheet()
+    .getSheetByName("JS").getRange("B1").setValue(JSON.stringify(value));
+}
+```
 
 Basically, what is does is this: when the spreadsheet is edited,
 the script gets all the sheets, filter out the one named JS,

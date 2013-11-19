@@ -63,11 +63,15 @@ The model (scope) contains:
 So now, when it comes to view, I just display stuff based on the model.
 On the iPad, showing different components for different steps is as easy as:
 
-    <div ng-show="step==1" ...
+```html
+<div ng-show="step==1" ...
+```
 
 On my desktop page, it's something like:
 
-    <li ng-class="{active: step==1}" ...
+```html
+<li ng-class="{active: step==1}" ...
+```
 
 But...
 ------
@@ -86,7 +90,9 @@ How?
 
 Using synchroscope is easy. You just include several JS files, declare a dependency, and then add one line of JavaScript to your controller:
 
-    $ync($scope, ['list', 'of', 'properties', 'to', 'keep', 'in', 'sync'], 'roomName')
+```javascript
+$ync($scope, ['list', 'of', 'properties', 'to', 'keep', 'in', 'sync'], 'roomName')
+```
 
 After this, synchroscope will keep these properties in your `$scope` in sync with all clients in the same server and room.
 

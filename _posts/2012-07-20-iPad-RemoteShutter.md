@@ -24,8 +24,6 @@ preamble: |
 
 <p class="caption">A Node.js server sending tap events to the iPad through Veency.</p>
 
----
-
 
 
 
@@ -60,37 +58,40 @@ The Node.js Server
 to a VNC server. I also used [connect](http://www.senchalabs.org/connect/)
 so that I build the web server more quickly. So,
 
-
-    npm install rfb connect
+```bash
+npm install rfb connect
+```
 
 And the app code (this code is refined to work better):
 
-    var RFB = require('rfb')
-      , client = new RFB({
-          host: process.argv[2]
-        , password: process.argv[3]
-        , securityType: 'vnc'
-        })
-      , connect = require('connect')
-
-    console.log('connecting')
-    client.dimensions(function(dim) {
-      console.log('connected', dim)
-      connect.createServer()
-        .use(function(req, res, next) {
-          var m = req.url.match(/click\/([\d\.]+)\/([\d\.]+)/)
-          if (!m) return next()
-          var x = parseFloat(m[1])
-          var y = parseFloat(m[2])
-          client.sendPointer(x * dim.width, y * dim.height, true)
-          res.setHeader('Content-Type', 'text/plain')
-          process.nextTick(function() {
-            client.sendPointer(x * dim.width, y * dim.height, false)
-            res.end('ok')
-          })
-        })
-        .listen(2271)
+```javascript
+var RFB = require('rfb')
+  , client = new RFB({
+      host: process.argv[2]
+    , password: process.argv[3]
+    , securityType: 'vnc'
     })
+  , connect = require('connect')
+
+console.log('connecting')
+client.dimensions(function(dim) {
+  console.log('connected', dim)
+  connect.createServer()
+    .use(function(req, res, next) {
+      var m = req.url.match(/click\/([\d\.]+)\/([\d\.]+)/)
+      if (!m) return next()
+      var x = parseFloat(m[1])
+      var y = parseFloat(m[2])
+      client.sendPointer(x * dim.width, y * dim.height, true)
+      res.setHeader('Content-Type', 'text/plain')
+      process.nextTick(function() {
+        client.sendPointer(x * dim.width, y * dim.height, false)
+        res.end('ok')
+      })
+    })
+    .listen(2271)
+})
+```
 
 ---
 
@@ -116,7 +117,9 @@ Using It
 
 Now, after the iPad and the laptop is in the same wireless network, run:
 
-    node app.js 192.168.43.42 vncpass1
+```bash
+node app.js 192.168.43.42 vncpass1
+```
 
 Change the IP and your VNC password accordingly, then if it works, it
 should say "connected" along with the dimensions of the screen.

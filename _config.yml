@@ -7,6 +7,13 @@ pygments: true
 markdown: redcarpet
 relative_permalinks: false
 
+redcarpet:
+  extensions:
+    - tables
+    - smart
+    - fenced_code_blocks
+    - no_intra_emphasis
+
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
