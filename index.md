@@ -25,7 +25,7 @@ All Posts
 <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
 <span class="date"> — {{ post.date | date:site.data.date_format.short }}</span></h3>
 {% if post.preamble %}
-<BLOCKQUOTE class=me-preamble>{{ post.preamble | markdownify }}<a href="{{ BASE_PATH }}/{{ post.url }}" class="read-more">&raquo; read more</a></BLOCKQUOTE>
+<BLOCKQUOTE class=me-preamble>{{ post.preamble | markdownify }}<a href="{{ BASE_PATH }}{{ post.url }}" class="read-more">&raquo; read more</a></BLOCKQUOTE>
 {% endif %}
 </li>
 {% endif %}
