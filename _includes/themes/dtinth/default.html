@@ -6,7 +6,7 @@
 <title>{{ page.title }}{% unless page.no_suffix %} ★ me.dt.in.th{% endunless %}</title>
 {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
 <meta name="author" content="{{ site.author.name }}">
-<meta property="og:title" content="{{ page.title }} ★ me.dt.in.th">
+<meta property="og:title" content="{{ page.title | xml_escape }} ★ me.dt.in.th">
 <meta property="og:site_name" content="me.dt.in.th">
 <meta property="fb:admins" content="1658509977">
 
