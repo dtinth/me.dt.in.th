@@ -1,7 +1,7 @@
 
 .highlight {
   .kd { color: #B9DCA0; }
-  .s1 { color: #FF9B9A; }
+  .s1, .s2, .mi { color: #FF9B9A; }
   .c1 { color: #8FDC9F; }
   .k  { color: #DBD79D; }
   .o, .p  { color: #d9d8d7; }
@@ -10,4 +10,12 @@
   .nx[data-name=prototype],
   .k[data-name=this] {
     font-weight: bold; color: #96BEDC; }
+
+  .php {
+    .cp, .se { color: #96BEDC; font-weight: bold; }
+    .k[data-name=function],
+    .k[data-name=array] { color: #E49CBB; }
+    .p { color: #96BEDC; }
+  }
+
 }
