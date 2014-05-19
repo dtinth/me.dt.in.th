@@ -115,7 +115,9 @@ a:focus {
     text-align: center;
   }
 
-  .image {
+  .image,
+  .next-image + p,
+  .next-image-caption + p {
     text-align: center;
     img {
       max-width: 100%;
@@ -129,9 +131,26 @@ a:focus {
     font-family: $codefont;
   }
 
+  .caption,
+  .next-caption + p,
+  .next-image-caption + p + p {
+    text-align: center;
+    font-style: italic;
+    color: #a9a8a7;
+    margin-top: -1em;
+    font-size: 0.9em;
+  }
 
-  .caption { text-align: center; font-style: italic; color: #a9a8a7; margin-top: -1em; font-size: 0.9em; }
-  .center { text-align: center; }
+  .caption-up,
+  .next-caption-up + p,
+  .next-image-caption-up + p + p {
+    margin-top: -2.5em;
+  }
+
+  .center,
+  .next-center + p {
+    text-align: center;
+  }
 
   pre { background: #252423; padding:  1em; }
 
