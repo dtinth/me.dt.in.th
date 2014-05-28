@@ -20,8 +20,18 @@ All Posts
 <ul class="posts">
 {% for post in site.posts %}
 {% if post.layout != 'from_old_blog' %}
+{% for medium_post in site.data.medium %}
+{% if medium_post.insert_before == post.path %}
+<li>
+<h3><a href="{{medium_post.url}}">{{medium_post.title}}</a>
+<span class="date"> — {{ medium_post.date | date:site.data.date_format.short }}</span></h3>
+<BLOCKQUOTE class=me-preamble>{{ medium_post.preamble | markdownify }}<a href="{{ medium_post.url }}" class="read-more">&raquo; read more on Medium</a></BLOCKQUOTE>
+</li>
+{% endif %}
+{% endfor %}
 <li>
 <h3>
+<!-- {{ post.path }} -->
 <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
 <span class="date"> — {{ post.date | date:site.data.date_format.short }}</span></h3>
 {% if post.preamble %}
