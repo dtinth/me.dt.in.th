@@ -1,3 +1,25 @@
+- title: 'Declaring a CSS Animation @keyframes Directly on an Element using Sass'
+  preamble: |
+    Usually, when I write CSS (or Sass), making an element animate involves
+    creating an `@keyframe` declaration and giving it a name,
+    and referencing it in the CSS ruleset by name.
+
+    More often than not, that particular animation would have been used only once in your whole CSS file.
+    This article introduces a mixin to help.
+  url: 'https://medium.com/@dtinth/declaring-a-css-animation-keyframes-directly-on-an-element-using-sass-f091a0a15dbd'
+  date: 2014-10-23
+  insert_before: '_posts/2014-05-19-Mac-NAT.md'
+
+- title: 'Changing the System Font on Yosemite'
+  preamble: |
+    Mac OS X comes with a new system font, Helvetica Neue.
+    Maybe it’s just me, but for such a new and modern interface, Helvetica Neue feels… ancient, and Helvetica is already everywhere…
+
+    A more futuristic font such as Avenir Next may be a better choice.
+  url: 'https://medium.com/@dtinth/changing-the-system-font-on-yosemite-5870887e7b45'
+  date: 2014-10-17
+  insert_before: '_posts/2014-05-19-Mac-NAT.md'
+
 - title: 'Populate .gitignore Automatically with git-ignore'
   preamble: |
     Tired of having to create your `.gitignore` manually?
