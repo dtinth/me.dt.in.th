@@ -17,10 +17,15 @@ title: Atom Feed
 
  {% for post in site.posts %}
  <entry>
+   {% if post.redirect_to %}
+     {% assign post_url = post.redirect_to %}
+   {% else %}
+     {% assign post_url = site.production_url | append: post.url %}
+   {% endif %}
    <title>{{ post.title }}</title>
-   <link href="{{ site.production_url }}{{ post.url }}"/>
+   <link href="{{ post_url }}"/>
    <updated>{{ post.date | date_to_xmlschema }}</updated>
-   <id>{{ site.production_url }}{{ post.id }}</id>
+   <id>{{ post_url }}</id>
    <content type="html">{% if post.preamble %}{{ post.preamble | markdownify | xml_escape }}{% endif %}{{ post.content | xml_escape }}</content>
  </entry>
  {% endfor %}

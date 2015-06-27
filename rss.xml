@@ -15,11 +15,16 @@ title: RSS Feed
         <ttl>1800</ttl>
 
 {% for post in site.posts %}
+        {% if post.redirect_to %}
+         {% assign post_url = post.redirect_to %}
+        {% else %}
+         {% assign post_url = site.production_url | append: post.url %}
+        {% endif %}
         <item>
                 <title>{{ post.title }}</title>
                 <description>{% if post.preamble %}{{ post.preamble | markdownify | xml_escape }}{% endif %}{{ post.content | xml_escape }}</description>
-                <link>{{ site.production_url }}{{ post.url }}</link>
-                <guid>{{ site.production_url }}{{ post.id }}</guid>
+                <link>{{ post_url }}</link>
+                <guid>{{ post_url }}</guid>
                 <pubDate>{{ post.date | date_to_xmlschema }}</pubDate>
         </item>
 {% endfor %}
