@@ -20,22 +20,18 @@ All Posts
 <ul class="posts">
 {% for post in site.posts %}
 {% if post.layout != 'from_old_blog' %}
-{% for medium_post in site.data.medium %}
-{% if medium_post.insert_before == post.path %}
-<li>
-<h3><a href="{{medium_post.url}}">{{medium_post.title}}</a>
-<span class="date"> — {{ medium_post.date | date:site.data.date_format.short }}</span></h3>
-<BLOCKQUOTE class=me-preamble>{{ medium_post.preamble | markdownify }}<a href="{{ medium_post.url }}" class="read-more">&raquo; read more on Medium</a></BLOCKQUOTE>
-</li>
-{% endif %}
-{% endfor %}
 <li>
 <h3>
+{% if post.redirect_to %}
+  {% assign post_url = post.redirect_to %}
+{% else %}
+  {% assign post_url = BASE_PATH | append: post.url %}
+{% endif %}
 <!-- {{ post.path }} -->
-<a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
+<a href="{{ post_url }}">{{ post.title }}</a>
 <span class="date"> — {{ post.date | date:site.data.date_format.short }}</span></h3>
 {% if post.preamble %}
-<BLOCKQUOTE class=me-preamble>{{ post.preamble | markdownify }}<a href="{{ BASE_PATH }}{{ post.url }}" class="read-more">&raquo; read more</a></BLOCKQUOTE>
+<BLOCKQUOTE class=me-preamble>{{ post.preamble | markdownify }}<a href="{{ post_url }}" class="read-more">&raquo; read more{% if post.read_more_on %} on {{ post.read_more_on }}{% endif %}</a></BLOCKQUOTE>
 {% endif %}
 </li>
 {% endif %}
@@ -59,6 +55,3 @@ From the Old Blog
 {% endfor %}
 <li><strong><a href="{{ BASE_PATH }}/old/">more in the archives!</a></strong></li>
 </ul>
-
-
-
