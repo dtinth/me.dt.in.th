@@ -37,7 +37,7 @@ a:focus {
 
 .me-subsubhead {
   color: #FEBFEA;
-  text-shadow: 2px 2px rgba(0, 0, 0, 0.25); 
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.25);
 }
 
 .me-content-data {
@@ -196,6 +196,23 @@ ul.me-posts {
 }
 
 ul.posts {
+  h3 a {
+    text-decoration: none;
+    &:hover .post-title {
+      text-decoration: underline;
+    }
+  }
+  span.publication-name {
+    color: #999;
+    text-decoration: none;
+    &::after {
+      display: block;
+      content: '';
+      margin-top: -1.5ex;
+      height: 0;
+    }
+    font-size: 0.8em;
+  }
   span.date {
     color: #999;
     font-weight: normal;
@@ -505,5 +522,3 @@ a.read-more {
 
 @import "prettyprint";
 @import "pygments";
-
-
