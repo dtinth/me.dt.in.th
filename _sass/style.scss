@@ -42,8 +42,10 @@ a:focus {
 
 .me-content-data {
 
-  em { font-style: normal; color: #fff; background: #494847; margin: -2px; padding: 2px;
-    box-shadow: 0 2px 0 rgba(0,0,0,0.02), 0 1px 0 rgba(0,0,0,0.02); }
+  mark {
+    font-style: normal; color: #fff; background: #494847; margin: -2px; padding: 2px;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.02), 0 1px 0 rgba(0,0,0,0.02);
+  }
 
   p, ul, ol, pre, .syntaxhighlighter {
     margin: 1em 0;
@@ -196,6 +198,9 @@ ul.me-posts {
 }
 
 ul.posts {
+  li {
+    position: relative;
+  }
   h3 a {
     text-decoration: none;
     &:hover .post-title {
@@ -205,13 +210,11 @@ ul.posts {
   span.publication-name {
     color: #999;
     text-decoration: none;
-    &::after {
-      display: block;
-      content: '';
-      margin-top: -1.5ex;
-      height: 0;
-    }
     font-size: 0.8em;
+    display: block;
+    position: absolute;
+    top: -1.2em;
+    left: 0;
   }
   span.date {
     color: #999;
