@@ -4,13 +4,9 @@ permalink: "/page/ImplementLater"
 title: "What I learned during refactoring JavaScript"
 preamble: |
   I just refactored [dtinthstagram](/page/dtinthstagram) a bit, to make the code more concise,
-  also making use of [Backbone.js](http://documentcloud.github.com/backbone/).
+  also making use of [Backbone.js](http://backbonejs.org/).
   Here's the experience of it.
 ---
-
-
-
-
 
 The current version, as of writing, has a lot of memory leaks.
 When the view wants to update itself according to the change in the model,
@@ -131,7 +127,7 @@ binding and unbinding manually.
 Finally, I go [implement the `binds` function](https://github.com/dtinth/dtinthstagram/blob/backbone/binder.sjs),
 the model-view binder, and problem solved.
 
-
+_Thanks to Chris Headley of WhoIsHostingThis.com for reporting the broken links. You might find [Backbone.js Introduction and Resources](http://wiht.link/backbonejs-intro) on WhoIsHostingThis.com useful._
 
 
 
