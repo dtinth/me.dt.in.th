@@ -1,6 +1,6 @@
 ---
 layout: "post"
-permalink: "/page/Quicksort"
+permalink: "/page/Quicksort/"
 title: "Understanding Quicksort (with interactive demo)"
 preamble: |
   At the college, we're learning about abstract data types and few sorting algorithms,
