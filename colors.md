@@ -3,41 +3,32 @@ layout: "page"
 permalink: "/colors/"
 title: "Colors"
 css: |
-  color-palette {
+  .color-palette {
     display: flex;
   }
-  color-item {
+  .color-item {
     display: block;
     flex: 1;
     flex-basis: 0;
     height: 4em;
     padding: 0.5em;
   }
-  color-item.is-light {
+  .color-item.is-light {
     color: black;
   }
-  color-item.is-dark {
+  .color-item.is-dark {
     color: white;
   }
 ---
 
+<script src="https://unpkg.com/hsluv@0.0.3/hsluv.js"></script>
+<script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+
+{::options parse_block_html="true" /}
+
+<div id="colors">
+
 ## @dtinth’s Palette
-
-<script src="https://cdn.rawgit.com/husl-colors/husl/c7fe4df7febd3ff27ba61a46cd7f953fc2e0d73e/husl.js"></script>
-
-<script>
-  var ColorItemPrototype = Object.create(HTMLElement.prototype)
-  ColorItemPrototype.createdCallback = function () {
-    var color = this.getAttribute('color')
-    var hsl = $.husl.fromHex(color)
-    this.style.backgroundColor = color
-    this.classList.add(hsl[2] >= 50 ? 'is-light' : 'is-dark')
-    console.log('[%s] Color: %s, Lightness: %s', this.textContent, color, hsl[2])
-  }
-  var ColorItem = document.registerElement('color-item', {
-    prototype: ColorItemPrototype
-  })
-</script>
 
 <color-palette>
   <color-item color="#e9e8e7">Gray50</color-item>
@@ -54,7 +45,16 @@ css: |
   <color-item color="#d7fc70">Mindaro</color-item>
 </color-palette>
 
+## wonderful.software
 
+<color-palette>
+  <color-item color="#FFFFFF">White</color-item>
+  <color-item color="#F5F4F3">Gray20</color-item>
+  <color-item color="#353433">Gray800</color-item>
+  <color-item color="#E296AD">Cardinal250</color-item>
+  <color-item color="#DA3567">Cardinal350</color-item>
+  <color-item color="#A60035">Cardinal550</color-item>
+</color-palette>
 
 ## Bemuse Project
 
@@ -87,3 +87,37 @@ css: |
   <color-item color="#D4FB7F">Green300</color-item>
   <color-item color="#91CF00">Green400</color-item>
 </color-palette>
+
+</div>
+
+<script>
+Vue.component('color-palette', {
+  template: `<div class="color-palette">
+    <slot></slot>
+  </div>`
+})
+Vue.component('color-item', {
+  props: {
+    color: String,
+  },
+  computed: {
+    hsl() {
+      return hsluv.Hsluv.hexToHsluv(this.color)
+    },
+    className() {
+      return this.hsl[2] >= 50 ? 'is-light' : 'is-dark'
+    },
+    style() {
+      return { backgroundColor: this.color }
+    },
+  },
+  template: `<span class="color-item" :style="style" :class="className">
+    <slot></slot>
+    <br />
+    <span style="opacity: 0.5" v-html="color.toLowerCase()"></span>
+  </span>`
+})
+new Vue({
+  el: '#colors'
+})
+</script>
