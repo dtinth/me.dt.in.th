@@ -4,7 +4,6 @@ permalink: /page/:title/
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 highlighter: pygments
-markdown: redcarpet
 relative_permalinks: false
 
 redcarpet:
